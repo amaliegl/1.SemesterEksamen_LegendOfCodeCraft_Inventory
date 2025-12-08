@@ -9,7 +9,7 @@ import java.util.Locale;
 public abstract class Weapon extends Item{
     private final WeaponHand hand;
     private final WeaponMaterial material;
-    private final int defence;
+    private final int defence; //TODO spørg Mor eller Far -- skal vi lave gettere og settere på de atributter som spillet måske vil bruge udenfor vores inventory
     private final int damage;
     private final Rarity rarity;
 
@@ -29,7 +29,6 @@ public abstract class Weapon extends Item{
     } //Hvad bruger vi denne til? TODO tror bare den skal slettes
 
     public String createName(String name) {
-        String resultName;
         String materialName = this.material.name();
         return materialName.charAt(0) + materialName.substring(1).toLowerCase() + " " + name;
     }

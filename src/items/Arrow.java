@@ -2,8 +2,7 @@ package items;
 import enums.WeaponMaterial;
 
 public class Arrow extends Consumable {
-    private WeaponMaterial material;
-    private final double baseWeight = 0.1;
+    private final WeaponMaterial material;
     private int damage = 1;
     //base damage is 1, more damage is added based on material in calculateDamage() method
 
@@ -18,7 +17,6 @@ public class Arrow extends Consumable {
     }
 
     public String createName() {
-        String resultName;
         String materialName = this.material.name();
         return materialName.charAt(0) + materialName.substring(1).toLowerCase() + " " + "Arrow";
         //name always ends in Arrow but first part of name depends on material
@@ -44,7 +42,6 @@ public class Arrow extends Consumable {
 
     private int calculateDamage(){
         int result;
-        int rarityScore = 0; //rarity er altid common
         //calculates damage by combining the scores of rarity and material and base damage
         if (this.material == WeaponMaterial.WOOD){
             result = this.damage; //WOOD gives 0 extra damage

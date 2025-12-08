@@ -19,7 +19,6 @@ public class Wearable extends Item {
     }
 
     public String createName(String name) {
-        String resultName;
         String materialName = this.material.name();
         return materialName.charAt(0) + materialName.substring(1).toLowerCase() + " " + name;
     }
