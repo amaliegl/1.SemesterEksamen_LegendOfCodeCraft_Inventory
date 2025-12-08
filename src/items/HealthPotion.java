@@ -7,27 +7,7 @@ import enums.WeaponMaterial;
 public class HealthPotion extends Consumable {
 
     public HealthPotion() {
-        super();
+        super("Health Potion",5, 0.2);
+        //name is always Health Potion, maxStack is always 5, weight is always 0.2
     }
-    /*private final int maxStack = 5;
-    private final double baseWeight = 0.2; //baseWeight is set here, for consistency compared to the other Items.
-
-    public HealthPotion(String name) {
-        super(name, Rarity.COMMON);
-        super.setWeight(calculateWeight());
-    }
-
-    public int getMaxStack(){
-        return maxStack;
-    }
-
-    @Override
-    public double calculateWeight() {
-        return this.baseWeight;
-    }
-
-    @Override
-    protected boolean isStackable(){
-        return true;
-    }*/
 }

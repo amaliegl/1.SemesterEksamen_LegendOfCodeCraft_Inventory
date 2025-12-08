@@ -1,53 +1,31 @@
 package items;
-import enums.Rarity;
 import enums.WeaponMaterial;
 
 public class Arrow extends Consumable {
-
-    public Arrow() {
-        super();
-    }
-
-    /*private WeaponMaterial material;
-    final private int maxStack = 30;
+    private WeaponMaterial material;
+    private final double baseWeight = 0.1;
     private int damage = 1;
-    final private double baseWeight = 0.1;
+    //base damage is 1, more damage is added based on material in calculateDamage() method
 
-    public Arrow(String name, WeaponMaterial material){
-        super(name, Rarity.COMMON); //Arrows are always of COMMON rarity
+    public Arrow(WeaponMaterial material) {
+        super( 30);
+        //maxStack is always 30
         this.material = material;
+        super.setWeight(calculateWeight(0.1));
+        //baseWeight is always 0.1
         this.damage = calculateDamage();
-        super.setWeight(calculateWeight());
+        super.setName(createName());
     }
 
-    public WeaponMaterial getMaterial() {
-        return material;
+    public String createName() {
+        String resultName;
+        String materialName = this.material.name();
+        return materialName.charAt(0) + materialName.substring(1).toLowerCase() + " " + "Arrow";
+        //name always ends in Arrow but first part of name depends on material
     }
 
-    public int getMaxStack(){
-        return maxStack;
-    }
 
-    private int calculateDamage(){
-        int result;
-        int rarityScore = 0; //rarity er altid common
-        //calculates damage by combining the scores of rarity and material and base damage
-        if (this.material == WeaponMaterial.WOOD){
-            result = this.damage + rarityScore; //WOOD gives 0 extra damage
-        } else if (this.material == WeaponMaterial.STONE){
-            result = damage + rarityScore + 1;
-        } else if (this.material == WeaponMaterial.IRON){
-            result = this.damage + rarityScore + 2;
-        } else if (this.material == WeaponMaterial.STEEL){
-            result = this.damage + rarityScore + 3;
-        } else {
-            result = this.damage + rarityScore; //TODO tjek else
-        }
-
-        return result;
-    }
-
-    public double calculateWeight() {
+    public double calculateWeight(double baseWeight) {
         double result;
         if (this.material == WeaponMaterial.WOOD) {
             result = baseWeight + 0;
@@ -63,7 +41,25 @@ public class Arrow extends Consumable {
         }
         return result;
     }
-    public boolean isStackable(){
-        return true;
-    }*/
+
+    private int calculateDamage(){
+        int result;
+        int rarityScore = 0; //rarity er altid common
+        //calculates damage by combining the scores of rarity and material and base damage
+        if (this.material == WeaponMaterial.WOOD){
+            result = this.damage; //WOOD gives 0 extra damage
+        } else if (this.material == WeaponMaterial.STONE){
+            result = this.damage + 1;
+        } else if (this.material == WeaponMaterial.IRON){
+            result = this.damage + 2;
+        } else if (this.material == WeaponMaterial.STEEL){
+            result = this.damage + 3;
+        } else {
+            result = this.damage; //TODO tjek else
+        }
+
+        return result;
+    }
+
+
 }
