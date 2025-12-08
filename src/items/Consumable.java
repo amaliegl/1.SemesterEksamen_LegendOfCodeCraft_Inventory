@@ -13,6 +13,10 @@ public class Consumable extends Item {
         this.maxStack = maxStack;
     } //Used for HealthPotion
 
+    public int getMaxStack(){
+        return this.getMaxStack();
+    }
+
     //Overloaed
     public Consumable(int maxStack) {
         super();
@@ -27,4 +31,5 @@ public class Consumable extends Item {
     public void setWeight(double weight) {
         super.setWeight(weight);
     }
+
 }

@@ -7,7 +7,7 @@ public class Arrow extends Consumable {
     //base damage is 1, more damage is added based on material in calculateDamage() method
 
     public Arrow(WeaponMaterial material) {
-        super( 30);
+        super(30);
         //maxStack is always 30
         this.material = material;
         super.setWeight(calculateWeight(0.1));
@@ -56,6 +56,14 @@ public class Arrow extends Consumable {
         }
 
         return result;
+    }
+
+    public WeaponMaterial getMaterial(){
+        return this.material;
+    }
+
+    public int getMaxStack(){
+        return super.getMaxStack();
     }
 
 

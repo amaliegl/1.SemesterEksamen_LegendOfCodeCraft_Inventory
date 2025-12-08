@@ -1,11 +1,12 @@
 package inventory;
 
 import items.Arrow;
+import items.Consumable;
 import items.HealthPotion;
 import items.Item;
 
 public class InventorySlot {
-    /*private Item item;
+    private Item item;
     private int quantity;
 
     public InventorySlot() {
@@ -21,40 +22,70 @@ public class InventorySlot {
     }
 
     public boolean canStackWith(Item item) {
-        //Downcasting
-        if (item instanceof Arrow && this.item instanceof Arrow) {
-            Arrow itemArrow = (Arrow)item;
-            Arrow thisItemArrow = (Arrow)item;
-            if (itemArrow.getMaterial() == thisItemArrow.getMaterial()) {
+        if (item instanceof Consumable && this.item instanceof Consumable) {
+            if (item instanceof HealthPotion && this.item instanceof HealthPotion) {
                 return true;
+            } else if (item instanceof Arrow && this.item instanceof Arrow) {
+                //Downcasting of arrow
+                Arrow itemArrow = (Arrow)item;
+                Arrow thisItemArrow = (Arrow)item;
+                if (itemArrow.getMaterial() == thisItemArrow.getMaterial()) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
-                return false;
+                return false; //TODO - kig på returnering
             }
-        } else if (item instanceof HealthPotion && this.item instanceof HealthPotion) {
-            return true;
         } else {
             return false;
         }
     }
 
-    public boolean isStackFull(Item item){
+    public boolean isStackFull(){
         //Downcasting consumables
-        if (item instanceof Arrow){
-            Arrow myArrow = (Arrow)item;
-            if (myArrow.getMaxStack() == quantity){
-                return true;
+        if (this.item instanceof Consumable) {
+            if (this.item instanceof Arrow) {
+                Arrow myArrow = (Arrow) this.item;
+                if (myArrow.getMaxStack() == this.quantity) {
+                    return true;
+                } else {
+                    return false;
+                }
+            } else if (this.item instanceof HealthPotion) {
+                HealthPotion myHealthPotion = (HealthPotion) this.item;
+                if (myHealthPotion.getMaxStack() == this.quantity) {
+                    return true;
+                } else {
+                    return false;
+                }
             } else {
-                return false;
-            }
-        } else if (item instanceof HealthPotion){
-            HealthPotion myHealthPotion = (HealthPotion)item;
-            if (myHealthPotion.getMaxStack() == quantity){
-                return true;
-            } else {
-                return false;
+                return true; //TODO - kig på returnering
             }
         } else {
             return true;
         }
-    }*/
+    }
+
+    //TODO -
+    public void consume() {
+        if (isEmpty()) {
+            //TODO - exception
+        } else {
+            this.quantity -= 1;
+        }
+    }
+
+    /*
+    consume()
+    1. tjek isEmpty -- hvis true så exception (kan ikke consume, hvis ikke der er noget)
+    2. reducér quantity med 1
+     */
+
+    /*
+    clearSlot()
+    1. tjek isEmpty -- hvis true så exception
+    2. set quantity = 0
+     */
+
 }
