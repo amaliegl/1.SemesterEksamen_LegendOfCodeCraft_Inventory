@@ -1,5 +1,11 @@
+import enums.Rarity;
+import enums.WeaponMaterial;
+import inventory.Inventory;
+import items.Item;
+import items.Sword;
+
 public class InventoryManager {
-}
+
 
     public InventoryManager(){
 

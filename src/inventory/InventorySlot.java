@@ -13,6 +13,35 @@ public class InventorySlot {
 
     }
 
+    public int getQuantity() {
+        return this.quantity;
+    }
+
+    public Item getItem() {
+        return this.item;
+    }
+
+    public void setQuantity(int quantity){
+        this.quantity = quantity;
+    }
+
+    public void addItem(Item item) {
+        if (isEmpty()) {
+            this.item = item;
+            this.quantity = 1;
+        } else {
+            //TODO - exception "slot er optaget"
+        }
+    }
+
+    public void addToStack(Item item){
+        if (canStackWith(item) && !isStackFull()){
+            this.quantity += 1;
+        } else {
+            //TODO - exception "kan ikke tilføje til stack" (eller lignende)
+        }
+    }
+
     public boolean isEmpty(){
         if (quantity == 0) {
             return true;

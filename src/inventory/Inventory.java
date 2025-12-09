@@ -13,8 +13,12 @@ public class Inventory {
     private double currentWeight = 0;
     private InventorySlot[] items;
 
-    public Inventory(){
-    
+    public Inventory() {
+        this.items = new InventorySlot[unlockedSlots];
+        //add inventorySlots to all indicies
+        for (int i = 0; i < this.items.length; i++) {
+            items[i] = new InventorySlot();
+        }
     }
 
     public InventorySlot[] getItems() {
