@@ -87,6 +87,15 @@ public class InventorySlot {
             this.quantity = 0;
         }
     }
+
+    //TODO -KUN TIL TEST
+    @Override
+    public String toString() {
+        return "InventorySlot{" +
+                "item=" + item +
+                ", quantity=" + quantity +
+                '}';
+    }
     /*
     clearSlot()
     1. tjek isEmpty -- hvis true så exception
