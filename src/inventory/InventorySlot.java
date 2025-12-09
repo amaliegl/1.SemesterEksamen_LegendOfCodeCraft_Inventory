@@ -67,7 +67,6 @@ public class InventorySlot {
         }
     }
 
-    //TODO -
     public void consume() {
         if (isEmpty()) {
             //TODO - exception
@@ -75,13 +74,19 @@ public class InventorySlot {
             this.quantity -= 1;
         }
     }
-
     /*
     consume()
     1. tjek isEmpty -- hvis true så exception (kan ikke consume, hvis ikke der er noget)
     2. reducér quantity med 1
      */
 
+    public void clearSlot() {
+        if (isEmpty()) {
+            //TODO - exception
+        } else {
+            this.quantity = 0;
+        }
+    }
     /*
     clearSlot()
     1. tjek isEmpty -- hvis true så exception

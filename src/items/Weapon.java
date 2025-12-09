@@ -4,8 +4,6 @@ import enums.Rarity;
 import enums.WeaponHand;
 import enums.WeaponMaterial;
 
-import java.util.Locale;
-
 public abstract class Weapon extends Item{
     private final WeaponHand hand;
     private final WeaponMaterial material;

@@ -4,24 +4,28 @@ import enums.WeaponMaterial;
 public class Arrow extends Consumable {
     private final WeaponMaterial material;
     private int damage = 1;
+    private final double baseWeight = 0.1;
     //base damage is 1, more damage is added based on material in calculateDamage() method
 
     public Arrow(WeaponMaterial material) {
         super(30);
         //maxStack is always 30
         this.material = material;
-        super.setWeight(calculateWeight(0.1));
+        super.setWeight(calculateWeight(baseWeight));
         //baseWeight is always 0.1
         this.damage = calculateDamage();
         super.setName(createName());
     }
 
-    public String createName() {
+    public WeaponMaterial getMaterial(){
+        return this.material;
+    }
+
+    private String createName() {
         String materialName = this.material.name();
         return materialName.charAt(0) + materialName.substring(1).toLowerCase() + " " + "Arrow";
         //name always ends in Arrow but first part of name depends on material
     }
-
 
     public double calculateWeight(double baseWeight) {
         double result;
@@ -57,14 +61,4 @@ public class Arrow extends Consumable {
 
         return result;
     }
-
-    public WeaponMaterial getMaterial(){
-        return this.material;
-    }
-
-    public int getMaxStack(){
-        return super.getMaxStack();
-    }
-
-
 }

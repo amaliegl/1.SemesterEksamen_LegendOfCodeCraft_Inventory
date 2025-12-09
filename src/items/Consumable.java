@@ -13,16 +13,16 @@ public class Consumable extends Item {
         this.maxStack = maxStack;
     } //Used for HealthPotion
 
-    public int getMaxStack(){
-        return this.getMaxStack();
-    }
-
-    //Overloaed
+    //Overloaded
     public Consumable(int maxStack) {
         super();
         this.maxStack = maxStack;
     }
     //Used for Arrows
+
+    public int getMaxStack(){
+        return this.maxStack;
+    }
 
     public void setName(String name) {
         super.setName(name);

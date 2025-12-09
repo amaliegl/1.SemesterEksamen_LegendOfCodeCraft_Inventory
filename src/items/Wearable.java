@@ -56,7 +56,7 @@ public class Wearable extends Item {
         return this.defence + addedDefence;
     }
 
-    protected double calculateWeight(double baseWeight) {
+    private double calculateWeight(double baseWeight) {
         double result;
         if (this.material == WearableMaterial.LEATHER) {
             result = baseWeight + 0;
