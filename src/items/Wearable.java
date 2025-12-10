@@ -19,8 +19,9 @@ public class Wearable extends Item {
     }
 
     public String createName(String name) {
-        String materialName = this.material.name();
-        return materialName.charAt(0) + materialName.substring(1).toLowerCase() + " " + name;
+        String materialName = this.material.name().charAt(0) + this.material.name().substring(1).toLowerCase();
+        String rarityName = this.rarity.name().charAt(0) + this.rarity.name().substring(1).toLowerCase();
+        return materialName + " " + name + " [" + rarityName + "]";
     }
 
     private int calculateDefence(int baseDefence) {

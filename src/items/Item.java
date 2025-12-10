@@ -12,6 +12,10 @@ public abstract class Item {
         return this.name;
     }
 
+    public double getWeight(){
+        return this.weight;
+    }
+
     public void setName(String name) {
         this.name = name;
     }

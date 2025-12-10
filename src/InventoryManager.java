@@ -11,13 +11,13 @@ public class InventoryManager {
 
     }
 
-    //TODO -
+    //TODO - LAV PÆNERE!!!!!
     public String printAll(Inventory inventory) {
-        return inventory.toString();
+        return inventory.printAll();
     }
 
-    public void addItem(Inventory inventory) {
-        Item item = createSword();
+    public void addItem(Inventory inventory, Item item) {
+        //Item item = createSword(); //SKAL SLETTES - TIL TEST TODO
         int stackIndex = inventory.slotWhereItemCanAddToStack(item);
 
         if (stackIndex != -1) {
@@ -29,13 +29,14 @@ public class InventoryManager {
         // TODO - exception "din inventory er fuld" (eller lignende)
     }
 
-    private Item createSword() {
+    //TODO TIL TEST! SLEEEEEEET
+    /*private Item createSword() {
         Rarity rarity = Rarity.LEGENDARY;
         WeaponMaterial material = WeaponMaterial.STEEL;
         Item testSword = new Sword(rarity, material);
 
         return testSword;
-    }
+    }*/
 
     /*public Inventory createInventory(){
         return new Inventory();

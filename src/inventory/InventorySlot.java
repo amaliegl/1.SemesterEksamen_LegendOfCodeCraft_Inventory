@@ -1,10 +1,7 @@
 package inventory;
 
-import enums.WeaponMaterial;
 import interfaces.ConsumableWithMaterial;
-import items.Arrow;
 import items.Consumable;
-import items.HealthPotion;
 import items.Item;
 
 public class InventorySlot {
@@ -61,13 +58,13 @@ public class InventorySlot {
                     ConsumableWithMaterial consumableWithMaterial = (ConsumableWithMaterial) item;
                     ConsumableWithMaterial thisconsumableWithMaterial = (ConsumableWithMaterial) this.item;
                     //Checks if the material of the objects are the same
-                    if (consumableWithMaterial.getMaterial() == consumableWithMaterial.getMaterial()) {
+                    if (consumableWithMaterial.getMaterial() == thisconsumableWithMaterial.getMaterial()) {
                         return true;
                     } else {
                         return false;
                     }
                 } else {
-                    return true; //TODO - kig på returnering
+                    return true;
                 }
             } else {
                 return false;
@@ -93,23 +90,19 @@ public class InventorySlot {
     }
 
     public void consume() {
-        if (isEmpty()) {
-            //TODO - exception
-        } else {
+        if (quantity > 1) {
             this.quantity -= 1;
+        } else {
+            clearSlot();
         }
     }
-    /*
-    consume()
-    1. tjek isEmpty -- hvis true så exception (kan ikke consume, hvis ikke der er noget)
-    2. reducér quantity med 1
-     */
 
     public void clearSlot() {
         if (isEmpty()) {
             //TODO - exception
         } else {
             this.quantity = 0;
+            this.item = null;
         }
     }
 
@@ -121,10 +114,4 @@ public class InventorySlot {
                 ", quantity=" + quantity +
                 '}';
     }
-    /*
-    clearSlot()
-    1. tjek isEmpty -- hvis true så exception
-    2. set quantity = 0
-     */
-
 }

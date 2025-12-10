@@ -20,51 +20,27 @@ public class Inventory {
             items[i] = new InventorySlot();
         }
     }
-
-    public InventorySlot[] getItems() {
+//TODO slet??
+    /*public InventorySlot[] getItems() {
         return items;
-    }
+    }*/
 
 
 
     public void addItemToEmptySlot(Item item, int index) {
         items[index].addItem(item);
+        addWeightToInventory(item);
     }
 
     public void addItemToStack(Item item, int index) {
         items[index].addToStack(item);
+        addWeightToInventory(item);
     }
 
-    /*public boolean addItemToInventoryCapacity(Item item) {
-        //tjek om der er ledig plads i eksisterende stack - hvis ja så tilføj
-        //ellers: er der ledig slot - hvis ja så tilføj
-        int stackIndex = slotWhereItemCanAddToStack(item);
-        if (stackIndex != -1) {
-            int currentStackSize = items[stackIndex].getQuantity();
-            items[stackIndex].setQuantity(currentStackSize + 1);
-            return true;
-        }
-        int index = hasAvailableSlot();
-        if (index != -1) {
-            items[index].addItem(item);
-            return true;
-        }
-        return false;
-        //exception "inventory fuld" (eller lignende)
-    }*/
+    public void addWeightToInventory(Item item){
+        this.currentWeight += item.getWeight();
+    }
 
-
-    //TODO kig på navn
-    //slotAvailableForStacking
-    //slotAvailableForStackableItem
-    //isStackableWithItem
-    //occupiedSlotWithRoomForStackableItem
-    //slotWithExtraRoomForItem
-    //slotWithNotFullStack
-    //findSlotWithStackOfItemThatIsNotFull
-    //findSlotStackWithRoomForItem
-    //slotWhereItemCanAddToStack
-    //slotWithExistingItemStack
 
     //return index for available slot, else return -1
     public int slotWhereItemCanAddToStack(Item item) {
@@ -81,7 +57,7 @@ public class Inventory {
         return -1;
     }
 
-    //check if a slot is empty
+    //return index of first empty slot, else return -1
     public int hasAvailableSlot() {
         for (int i = 0; i < this.items.length; i++) {
             if (items[i].isEmpty()) {
@@ -89,6 +65,20 @@ public class Inventory {
             }
         }
         return -1;
+    }
+
+    public String printAll(){
+        String output = "";
+        for (int i = 0; i <items.length; i++){
+            if (items[i].getItem() != null) {
+                //output += ("Slot " + (i + 1) + ": " + items[i].getItem().getName() + " (" + items[i].getQuantity() + ")\n");
+                output += ("Slot " + (i + 1) + ": " + items[i].getItem().getName() + " (" + items[i].getQuantity() + "): " + (items[i].getItem().getWeight() * items[i].getQuantity()) +"kg\n");
+            } else {
+                output += "Slot " + (i + 1) + ": Empty\n";
+            }
+        }
+        output += ("Total inventory weight: " + this.currentWeight + "kg");
+        return output;
     }
 
     //TODO - KUN TIL TEST!!
