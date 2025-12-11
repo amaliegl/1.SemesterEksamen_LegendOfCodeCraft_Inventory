@@ -44,7 +44,7 @@ public class Wearable extends Item {
         if (this.material == WearableMaterial.LEATHER) {
             addedDefence += 0;
         } else if (this.material == WearableMaterial.IRON) {
-            addedDefence += 1;
+            addedDefence *= 1;
         } else if (this.material == WearableMaterial.STEEL) {
             addedDefence += 2;
         } else if (this.material == WearableMaterial.CHAINMAIL) {
@@ -60,13 +60,13 @@ public class Wearable extends Item {
     private double calculateWeight(double baseWeight) {
         double result;
         if (this.material == WearableMaterial.LEATHER) {
-            result = baseWeight + 0;
+            result = baseWeight;
         } else if (this.material == WearableMaterial.IRON) {
-            result = baseWeight + 1;
+            result = baseWeight * 1.1;
         } else if (this.material == WearableMaterial.STEEL) {
-            result = baseWeight + 2;
+            result = baseWeight * 1.2;
         } else if (this.material == WearableMaterial.CHAINMAIL) {
-            result = baseWeight + 1.7;
+            result = baseWeight * 1.5;
         } else {
             result = baseWeight;
             // TODO - tjek "else"

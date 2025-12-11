@@ -93,7 +93,6 @@ public class Inventory {
         String output = "";
         for (int i = 0; i <items.length; i++){
             if (items[i].getItem() != null) {
-                //output += ("Slot " + (i + 1) + ": " + items[i].getItem().getName() + " (" + items[i].getQuantity() + ")\n");
                 output += ("Slot " + (i + 1) + ": " + items[i].getItem().getName() + " (" + items[i].getQuantity() + "): " + (items[i].getItem().getWeight() * items[i].getQuantity()) +"kg\n");
             } else {
                 output += "Slot " + (i + 1) + ": Empty\n";
