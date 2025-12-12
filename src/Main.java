@@ -2,13 +2,11 @@ import enums.ConsumableMaterial;
 import enums.Rarity;
 import enums.WeaponMaterial;
 import enums.WearableMaterial;
-import exceptions.ExceedsAvailableSlotsException;
-import exceptions.InventorySlotAlreadyEmptyException;
-import exceptions.InventoryWeightLimitReachedException;
-import exceptions.NoEmptySlotsAvailableException;
+import exceptions.*;
 import inventory.Inventory;
 import items.*;
 
+import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
@@ -113,17 +111,18 @@ public class Main {
     }
 
     public static void removeItemFromInventory() {
-        inventoryManager.printSlotOverview();
+        System.out.println(inventoryManager.printSlotOverview());
         System.out.print("\nFrom which slot number do you wish to remove an item: ");
         String userInput = input.nextLine();
         try {
             int userInputInt = Integer.parseInt(userInput);
             try {
                 inventoryManager.removeItemFromSlot(userInputInt);
+                System.out.println("Item was removed from slot " + userInputInt);
             } catch (ExceedsAvailableSlotsException e) {
                 System.out.println("You do not have access to the chosen slot");
             } catch (InventorySlotAlreadyEmptyException e) {
-                System.out.println("The selected slot is already empty - cannot remove object");
+                System.out.println("The selected slot is already empty - cannot remove item");
             }
         } catch (NumberFormatException e) {
             System.out.println("A valid number was not entered");
@@ -292,6 +291,29 @@ public class Main {
         }
         return "Det virkede ikke SLEEEEEEEEET"; //TODO ved ikke hvad det her gør
     }
-}
 
-//public static void removeItem(){}
+    public static void addSlotsToInventory() {
+        System.out.print("How many slots should be added: ");
+        String userInput = input.nextLine();
+        try {
+            int slotsToAdd = Integer.parseInt(userInput);
+            try {
+                inventoryManager.addSlots(slotsToAdd);
+            } catch (ExceedingMaxSlotCapacityException e) {
+                System.out.println("Cannot add " + slotsToAdd + " extra slots as this will exceed the max slot capacity");
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("A valid number was not inputted");
+        }
+    }
+
+    public static void advancedMenu(){
+       /* 8: Advanced features
+        herunder:
+        1: Export data TODO
+        2: Reset data / delete data (husk en "er du sikker på..." før sletning) TODO
+        3: Restore data TODO{
+        */
+    }
+
+}

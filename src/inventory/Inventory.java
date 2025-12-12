@@ -1,12 +1,15 @@
 package inventory;
 
 
+import exceptions.ExceedingMaxSlotCapacityException;
 import exceptions.InventorySlotAlreadyEmptyException;
 import exceptions.InventoryWeightLimitReachedException;
 import exceptions.ExceedsAvailableSlotsException;
 import items.Consumable;
 import items.Item;
+import items.SerializationClass;
 
+import java.io.IOException;
 import java.util.Arrays;
 
 public class Inventory {
@@ -27,6 +30,13 @@ public class Inventory {
     public InventorySlot[] getItems() {
         return items;
     }
+
+    public String serialize() throws IOException {
+        SerializationClass serializationClass = new SerializationClass();
+        serializationClass.serializeObjectArray(this.items);
+        return "Det er vidst gjort??";
+    }
+
 
     public void addItemToEmptySlot(Item item, int index) {
         items[index].addItem(item);
@@ -99,6 +109,28 @@ public class Inventory {
         return output;
     }
 
+    public void addSlots(int amount) {
+        if ((this.unlockedSlots + amount) > maxSlots) {
+            throw new ExceedingMaxSlotCapacityException("Cannot add " + amount + " slots as this will exceed maxSlots");
+        } else {
+            //create new temporary array with "amount" extra slots
+            InventorySlot[] temp = new InventorySlot[this.items.length + amount];
+
+            //copying contents of current array of slots into new array of slots
+            for (int i = 0; i < items.length; i++) {
+                temp[i] = items[i];
+            }
+
+            //adding empty slots to the newly added slots
+            for (int i = items.length; i < temp.length; i++) {
+                temp[i] = new InventorySlot();
+            }
+
+            //make our inventory equal the newly created array of slots
+            items = temp;
+        }
+    }
+
     //TODO - KUN TIL TEST!!
     @Override
     public String toString() {
@@ -111,4 +143,3 @@ public class Inventory {
                 '}';
     }
 }
-

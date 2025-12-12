@@ -5,7 +5,9 @@ import interfaces.ConsumableWithMaterial;
 import items.Consumable;
 import items.Item;
 
-public class InventorySlot {
+import java.io.Serializable;
+
+public class InventorySlot implements Serializable {
     private Item item;
     private int quantity;
     //TODO - "ikke objektorienteret nok" - skal det ligge som array i stedet for?
