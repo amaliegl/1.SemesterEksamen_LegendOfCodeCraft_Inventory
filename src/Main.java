@@ -21,12 +21,12 @@ public class Main {
     public static void main(String[] args) {
 
 
-        //tilføj 3 wood arrows
+        /*tilføj 3 wood arrows
         for (int i = 0; i < 35; i++) {
             inventoryManager.addItem(itemFactory.createWoodArrow());
         }
 
-        //TODO - skal der være en metode til at lave en tilfældig inventory, man kan starte med?
+        TODO - skal der være en metode til at lave en tilfældig inventory, man kan starte med?
         //loop to create an amount of random items and add to inventory
         for (int i = 0; i < 32; i++) {
             try {
@@ -40,13 +40,15 @@ public class Main {
                 System.out.println("Cannot add item as there are no empty slots available.");
             }
         }
+
+        //tester sortering
         System.out.println("------before sorting--------");
+        removeItemFromInventory();
         System.out.println(inventoryManager.printSlotOverview());
         System.out.println("----------after sorting--------");
         inventoryManager.dataSort();
         System.out.println(inventoryManager.printSlotOverview());
 
-        System.out.println("=== Welcome to the Legend of CodeCraft Inventory! ===");
 
 
 /*
@@ -56,33 +58,49 @@ public class Main {
         removeItemFromInventory();
         removeItemFromInventory();
         System.out.println(inventoryManager.printSlotOverview());
-        removeItemFromInventory();
-*/
-        /*
-        Hovedmenu:
-        1: Add random item to inventory
-            inventoryManager.addItem(ItemFactory.createRandomItem());
-        2: Remove item from inventory TODO
-        3: Print inventory overview
-            System.out.println(inventoryManager.printSlotOverview());
-        4: Search for items
-            (itemSearchMenu())
-        5: Sort inventory TODO
-            inventoryManager.dataSort();
-        6: Add inventory slots TODO
-        7: Advanced features TODO
-            herunder:
-            1: Export data
-            2: Reset data / delete data (husk en "er du sikker på..." før sletning)
-            3: Restore data
-         */
-        //Search for items menu
+        removeItemFromInventory();*/
+        boolean keepMenuRunning = true;
+        int menuChoice;
 
-
-        //itemSearchMenu();
-        //System.out.println("-----Amalie test----");
-        //System.out.println(itemSearchMenu());
+        while (keepMenuRunning){
+            System.out.println( "=== Welcome to the Legend of CodeCraft Inventory! ===\n" +
+                    "1: Add random item to inventory\n" +
+                    "2: Add 10 random items to inventory\n" +
+                    "3: Remove item from inventory\n" +
+                    "4: Print inventory\n" +
+                    "5: Sort items\n" +
+                    "6: Search for item\n" +
+                    "7: Add inventory slots\n"+
+                    "8: Advanced features\n" +
+                    "9: Close menu");
+            String userInput = input.nextLine();
+            try {
+                menuChoice = Integer.parseInt(userInput);
+                switch(menuChoice){
+                    case 1: addRandomItemToInventory(); break;
+                    case 2: for (int i = 0 ; i < 10; i++) addRandomItemToInventory(); break; //TODO - skal der være klammer rundt om metode?
+                    case 3: removeItemFromInventory(); break;
+                    case 4: printInventory(); break;
+                    case 5: sortData(); break;
+                    case 6: itemSearchMenu(); break;
+                    case 7: addSlotsToInventory(); break;
+                    case 8: advancedMenu(); break;
+                    case 9: keepMenuRunning = false; break;
+                    case 10: try {
+                        inventoryManager.serialize();
+                    } catch (IOException e) {
+                        System.out.println("Det virker ikke - IOException");
+                    } break; //TODO - til test så ikke med i menuen
+                    default:
+                        System.out.println("An invalid option was chosen"); break;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Please only input a whole number");
+            }
+        }
     }
+
+
 
     public static void addRandomItemToInventory() {
         try {
@@ -110,6 +128,16 @@ public class Main {
         } catch (NumberFormatException e) {
             System.out.println("A valid number was not entered");
         }
+    }
+
+    public static void printInventory(){
+        System.out.println(inventoryManager.printSlotOverview());
+    }
+
+    public static void sortData(){
+        inventoryManager.dataSort();
+        System.out.println("Your inventory has been sorted:");
+        printInventory();
     }
 
     public static String itemSearchMenu() {
@@ -262,7 +290,7 @@ public class Main {
             System.out.println("Please only type a whole number");
             //"You have not inputted a valid number"
         }
-        return userInput; //TODO ved ikke hvad det her gør
+        return "Det virkede ikke SLEEEEEEEEET"; //TODO ved ikke hvad det her gør
     }
 }
 
