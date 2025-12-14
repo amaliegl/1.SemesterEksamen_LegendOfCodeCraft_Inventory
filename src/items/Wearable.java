@@ -2,7 +2,7 @@ package items;
 
 import enums.*;
 
-public class Wearable extends Item {
+public class Wearable extends Item { //TODO lav final/private osv
     BodyPart bodyPart;
     WearableMaterial material;
     int defence;

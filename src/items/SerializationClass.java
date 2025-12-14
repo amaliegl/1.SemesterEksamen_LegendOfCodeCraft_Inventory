@@ -1,5 +1,6 @@
 package items;
 
+import inventory.Inventory;
 import inventory.InventorySlot;
 
 import java.io.*;
@@ -7,31 +8,25 @@ import java.io.*;
 public class SerializationClass {
 
     //serialize
-    public static void serializeObjectArray(InventorySlot[] slots) throws IOException {
-        if (slots == null) {
-            throw new IllegalArgumentException("Object array cannot be null");
-        }
-        //try-with-ressources so not necessary to use .close()
-        try (FileOutputStream fileOutputStream = new FileOutputStream("output.txt");
-             ObjectOutputStream out = new ObjectOutputStream(fileOutputStream)) {
-             out.writeObject(slots);
-             out.close();
-             fileOutputStream.close();
-            System.out.println("Serialized data is saved"); //TODO - skal fjernes, hvis virker
-        } catch (IOException e) {
-            System.out.println("Exception reached!!!");
-        }
+    public void serializeInventory(String fileName, Inventory inventory) throws IOException{
+        FileOutputStream fileOutputStream = new FileOutputStream(fileName + ".ser");
+        ObjectOutputStream out = new ObjectOutputStream(fileOutputStream);
+        out.writeObject(inventory);
+        out.close();
+        fileOutputStream.close();
+        System.out.println("Serialization complete");
     }
 
     //deserialize
-    public static void deserializeObjectArray(String fileName) throws IOException, ClassNotFoundException {
-        if ((fileName + ".txt") == null) {
-            throw new IllegalArgumentException("Byte array cannot be null");
-        }
-        try (FileInputStream fileInputStream = new FileInputStream(fileName + ".txt");
-             ObjectInputStream in = new ObjectInputStream(fileInputStream)) {
-            System.out.println("Deserialization completed");
-        }
+    public Inventory deserializeInventory(String fileName) throws IOException, ClassNotFoundException {
+        Inventory tempInventory = null;
+
+        FileInputStream fileInputStream = new FileInputStream(fileName + ".ser");
+        ObjectInputStream in = new ObjectInputStream(fileInputStream);
+        tempInventory = (Inventory) in.readObject();
+        in.close();
+        fileInputStream.close();
+        return tempInventory;
     }
 
 

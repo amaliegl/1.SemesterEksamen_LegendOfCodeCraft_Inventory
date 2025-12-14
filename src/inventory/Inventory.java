@@ -10,9 +10,10 @@ import items.Item;
 import items.SerializationClass;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.Arrays;
 
-public class Inventory {
+public class Inventory implements Serializable {
     private final int maxSlots = 192;
     private int unlockedSlots = 32;
     private final double maxWeight = 50;
@@ -26,33 +27,27 @@ public class Inventory {
             items[i] = new InventorySlot();
         }
     }
-//TODO slet??
+
     public InventorySlot[] getItems() {
         return items;
     }
-
-    public String serialize() throws IOException {
-        SerializationClass serializationClass = new SerializationClass();
-        serializationClass.serializeObjectArray(this.items);
-        return "Det er vidst gjort??";
-    }
-
 
     public void addItemToEmptySlot(Item item, int index) {
         items[index].addItem(item);
         addWeightToInventory(item);
     }
 
-    //TODO Tjek om vægt kan lægges i inventory - så læg i inventory og tillæg vægt bagefter
-
     public void addItemToStack(Item item, int index) {
         items[index].addToStack(item);
         addWeightToInventory(item);
     }
-
-    //TODO - kan den være private?
-    public void addWeightToInventory(Item item){
+    
+    private void addWeightToInventory(Item item){
         this.currentWeight += item.getWeight();
+    }
+
+    private void removeWeightFromInventory(double weight) {
+        this.currentWeight -= weight;
     }
 
     public boolean checkIfItemWillExceedWeightLimit(Item item) {
@@ -68,7 +63,10 @@ public class Inventory {
             throw new ExceedsAvailableSlotsException("Attempting to remove an item from a locked slot");
             //TODO - skal der være en ekstra exception, som håndterer ugyldige slots (<0 og >192)?
         }
-        this.items[index].consume();
+        //save weight of the item at items[index] to remove if consume() is successful
+        double itemWeight = items[index].getItem().getWeight();
+        this.items[index].consume(); //removes item
+        removeWeightFromInventory(itemWeight); //remove the stored weight from inventory now that the item has been removed
     }
 
     //return index for available slot, else return -1
@@ -128,6 +126,18 @@ public class Inventory {
 
             //make our inventory equal the newly created array of slots
             items = temp;
+        }
+    }
+
+    public void factoryResetInventory(){
+        for (int i = 0; i < this.items.length; i++) {
+            if (items[i].getItem() != null) { //TODO - if indsat for at undgå fejl, når der forsøges at ryddes tomme slots
+                items[i].clearSlot();
+            }
+            this.currentWeight = 0;
+            this.unlockedSlots = 32;
+            //TODO - skal Inventory have attribut "DefaultUnlockedSlots = 32" som man så kan sætte "unlockedSlots" lig med hernede?
+            //TODO - det samme med "currentWeight" eller er det bare logisk, at man selvfølgelig har 0 kg til at starte med?
         }
     }
 

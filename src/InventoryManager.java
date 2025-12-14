@@ -5,9 +5,7 @@ import exceptions.InventoryWeightLimitReachedException;
 import exceptions.NoEmptySlotsAvailableException;
 import inventory.Inventory;
 import inventory.InventorySlot;
-import items.Consumable;
-import items.Item;
-import items.Sword;
+import items.*;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -19,9 +17,18 @@ public class InventoryManager {
         this.inventory = new Inventory();
     }
 
-    //TODO - serialize
-    public String serialize() throws IOException {
-        return inventory.serialize();
+
+    public void deserializeInventory(String fileName) throws IOException, ClassNotFoundException {
+        SerializationClass serializationClass = new SerializationClass();
+        Inventory tempInventory = serializationClass.deserializeInventory(fileName);
+        if (tempInventory != null) {
+            this.inventory = tempInventory;
+        }
+    }
+
+    public void serializeInventory(String fileName) throws IOException {
+        SerializationClass serializationClass = new SerializationClass();
+        serializationClass.serializeInventory(fileName, this.inventory);
     }
 
     public String printSlotOverview() {
@@ -47,16 +54,6 @@ public class InventoryManager {
         inventory.removeItemFromSlot(index);
     }
 
-    //TODO searchItem
-    /*
-    searchForItem(int input)
-    - return: liste af det, der er fundet
-
-    - Itemtype, material (wearable, weapon, consumable), rarity
-
-    TODO - find alle af det, man søger efter
-     */
-
     public String searchForItem(String searchParameter) {
         InventorySlot[] items = this.inventory.getItems();
         int amountInInventory = 0;
@@ -78,12 +75,12 @@ public class InventoryManager {
     }
 
 
-    void dataSort() {
+    void dataSortAlphabetical() {
         InventorySlot[] items = this.inventory.getItems();
         boolean swapped = true;
         while (swapped) {
             swapped = false;
-            for (int i = 0; i < items.length -1; i++) { //-1 because you have to stop at the second to last item, to be able to compare with next
+            for (int i = 0; i < items.length - 1; i++) { //-1 because you have to stop at the second to last item, to be able to compare with next
                 //If item[i] and item[i+1] both contain an Item
                 if (items[i].getItem() != null && items[i+1].getItem() != null) {
                     String itemName1 = items[i].getItem().getName();// the current item
@@ -124,27 +121,71 @@ public class InventoryManager {
     }
 
 
+    //TODO - find ud af, om det kan fungere med undersortering af weapon, wearable, consumable
+    //
+    public void dataSortByItem() {
+        InventorySlot[] items = this.inventory.getItems();
+        boolean swapped = true;
+        do {
+            swapped = false;
+            for (int i = 0; i < items.length - 1; i++) {
+
+                boolean bothConsumables = items[i].getItem() instanceof Consumable && items[i + 1].getItem() instanceof Consumable;
+                boolean bothWearables = items[i].getItem() instanceof Wearable && items[i + 1].getItem() instanceof Wearable;
+                boolean bothWeapons = items[i].getItem() instanceof Weapon && items[i + 1].getItem() instanceof Weapon;
+
+                // if (items[i].getItem() == null && items[i + 1].getItem() == null) -> no swap
+                // if (items[i].getItem() instanceof Wearable && (items[i + 1].getItem() instanceof Weapon || items[i + 1].getItem() instanceof Consumable)) -> no swap
+                // if (items[i].getItem() instanceof Wearable && items[i + 1].getItem() instanceof Consumable) -> no swap
+                if (items[i].getItem() == null && items[i + 1].getItem() != null) {
+                    swapped = true;
+                    //swapping Item[i] and Item[i+1]
+                    swapItems(i);
+                } else if (items[i].getItem() instanceof Consumable && (items[i + 1].getItem() instanceof Wearable || items[i + 1].getItem() instanceof Weapon)) {
+                    swapped = true;
+                    //swapping Item[i] and Item[i+1]
+                    swapItems(i);
+                } else if (items[i].getItem() instanceof Weapon && items[i + 1].getItem() instanceof Wearable) {
+                    swapped = true;
+                    //swapping Item[i] and Item[i+1]
+                    swapItems(i);
+                } else if (bothWearables || bothWeapons || bothConsumables) {
+                    if (items[i].getClass() == items[i+1].getClass()){
+                        if (items[i].getItem().getName().compareTo(items[i + 1].getItem().getName()) > 0) {
+                            swapped = true;
+                            //swapping Item[i] and Item[i+1]
+                            swapItems(i);
+                        }
+                    } /*else {
+                        String item1name = items[i].getClass().getSimpleName();
+                        String item2name = items[i + 1].getClass().getSimpleName();
+                        if (item1name.compareTo(item2name) > 0) {
+                            swapped = true;
+                            //swapping Item[i] and Item[i+1]
+                            swapItems(i);
+                        }
+                    }*/
+                    //TODO - Ovenstående troede vi ville sortere klassenavne alfabetisk, men det gør den ikke
+                        //items[i].getClass().getSimpleName().toString().compareTo(items[i + 1].getClass().getSimpleName().toString()
+                        //sorter efter klassenavn
+                }
+            }
+        } while (swapped);
+    }
+
+    private void swapItems(int i) {
+        InventorySlot[] items = this.inventory.getItems();
+        InventorySlot item1 = items[i];
+        InventorySlot item2 = items[i + 1];
+        items[i] = item2;
+        items[i + 1] = item1;
+    }
+
     public void addSlots(int amount) throws ExceedingMaxSlotCapacityException {
         this.inventory.addSlots(amount);
     }
 
-    /*
-        Adding slots
-        addSlots(int amount)
-        oprette ny array med "amount" ekstra index
-        kopiere nuværende array ind i nyt array
-        lav nyt array til det nye nuværende array
-
-
-                String[] temp = new String[original.length + 1];
-
-           for (int i = 0; i < original.length; i++){
-              temp[i] = original[i];
-           }
-           original = temp;
-        }
-
-     */
-
-
+    public void factoryResetInventory() {
+        inventory.factoryResetInventory();
+    }
 }

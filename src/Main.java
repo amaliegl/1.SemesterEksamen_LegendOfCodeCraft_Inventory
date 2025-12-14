@@ -17,80 +17,57 @@ public class Main {
     static ItemFactory itemFactory = new ItemFactory();
 
     public static void main(String[] args) {
-
-
-        /*tilføj 3 wood arrows
-        for (int i = 0; i < 35; i++) {
-            inventoryManager.addItem(itemFactory.createWoodArrow());
-        }
-
-        TODO - skal der være en metode til at lave en tilfældig inventory, man kan starte med?
-        //loop to create an amount of random items and add to inventory
-        for (int i = 0; i < 32; i++) {
-            try {
-                inventoryManager.addItem(itemFactory.createRandomItem());
-                //TODO - skal det være
-                // "Qualify static 'createRandomItem()' call with reference to class 'ItemFactory'"
-                // eller oprettes som et itemFactory objekt og bruges (hvis sidste anbefaler IntelliJ ovenstående)
-            } catch (InventoryWeightLimitReachedException e) {
-                System.out.println("Cannot add item as inventory weight limit will be exceeded.");
-            } catch (NoEmptySlotsAvailableException e) {
-                System.out.println("Cannot add item as there are no empty slots available.");
-            }
-        }
-
-        //tester sortering
-        System.out.println("------before sorting--------");
-        removeItemFromInventory();
-        System.out.println(inventoryManager.printSlotOverview());
-        System.out.println("----------after sorting--------");
-        inventoryManager.dataSort();
-        System.out.println(inventoryManager.printSlotOverview());
-
-
-
-/*
-        removeItemFromInventory();
-        System.out.println(inventoryManager.printSlotOverview());
-        removeItemFromInventory();
-        removeItemFromInventory();
-        removeItemFromInventory();
-        System.out.println(inventoryManager.printSlotOverview());
-        removeItemFromInventory();*/
         boolean keepMenuRunning = true;
         int menuChoice;
 
-        while (keepMenuRunning){
-            System.out.println( "=== Welcome to the Legend of CodeCraft Inventory! ===\n" +
+        while (keepMenuRunning) {
+            System.out.println("=== Welcome to the Legend of CodeCraft Inventory! ===\n" +
                     "1: Add random item to inventory\n" +
                     "2: Add 10 random items to inventory\n" +
                     "3: Remove item from inventory\n" +
                     "4: Print inventory\n" +
                     "5: Sort items\n" +
                     "6: Search for item\n" +
-                    "7: Add inventory slots\n"+
+                    "7: Add inventory slots\n" +
                     "8: Advanced features\n" +
-                    "9: Close menu");
+                    "9: Close menu\n");
             String userInput = input.nextLine();
             try {
                 menuChoice = Integer.parseInt(userInput);
-                switch(menuChoice){
-                    case 1: addRandomItemToInventory(); break;
-                    case 2: for (int i = 0 ; i < 10; i++) addRandomItemToInventory(); break; //TODO - skal der være klammer rundt om metode?
-                    case 3: removeItemFromInventory(); break;
-                    case 4: printInventory(); break;
-                    case 5: sortData(); break;
-                    case 6: itemSearchMenu(); break;
-                    case 7: addSlotsToInventory(); break;
-                    case 8: advancedMenu(); break;
-                    case 9: keepMenuRunning = false; break;
-                    case 10: try {
-                        inventoryManager.serialize();
-                    } catch (IOException e) {
-                        System.out.println("Det virker ikke - IOException");
-                    } break; //TODO - til test så ikke med i menuen
+                switch (menuChoice) {
+                    case 1:
+                        addRandomItemToInventory();
+                        break;
+                    case 2:
+                        for (int i = 0; i < 10; i++) addRandomItemToInventory();
+                        break; //TODO - skal der være klammer rundt om metode?
+                    case 3:
+                        removeItemFromInventory();
+                        break;
+                    case 4:
+                        printInventory();
+                        break;
+                    case 5:
+                        sortData();
+                        break;
+                    case 6:
+                        itemSearchMenu();
+                        break;
+                    case 7:
+                        addSlotsToInventory();
+                        break;
+                    case 8:
+                        advancedMenu();
+                        break;
+                    case 9:
+                        keepMenuRunning = false;
+                        break;
+                    case 12:
+                        advancedMenu();
+                        break;
                     default:
-                        System.out.println("An invalid option was chosen"); break;
+                        System.out.println("An invalid option was chosen");
+                        break;
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Please only input a whole number");
@@ -98,6 +75,32 @@ public class Main {
         }
     }
 
+
+    public static void serializeInventory() {
+        System.out.println("Indtast tekstfil-navn");
+        String fileName = input.nextLine();
+        try {
+            inventoryManager.serializeInventory(fileName);
+        } catch (IOException e) {
+            //throw new RuntimeException(e);
+            System.out.println("Error trying to serialize inventory");
+        }
+        //inventoryManager.serializeInventory(fileName);
+    }
+
+    public static void deserializeInventory() {
+        System.out.println("Indtast tekstfil-navn");
+        String fileName = input.nextLine();
+        try {
+            inventoryManager.deserializeInventory(fileName);
+        } catch (IOException e) {
+            //throw new RuntimeException(e);
+            System.out.println("Error trying to deserialize inventory");
+        } catch (ClassNotFoundException e) {
+            //throw new RuntimeException(e);
+            System.out.println("Error finding class when trying to deserialize inventory");
+        }
+    }
 
 
     public static void addRandomItemToInventory() {
@@ -129,14 +132,31 @@ public class Main {
         }
     }
 
-    public static void printInventory(){
+    public static void printInventory() {
         System.out.println(inventoryManager.printSlotOverview());
     }
 
-    public static void sortData(){
-        inventoryManager.dataSort();
-        System.out.println("Your inventory has been sorted:");
-        printInventory();
+    public static void sortData() {
+            System.out.println("Sort:\n" +
+                    "1: Alphabetically\n" +
+                    "2: By Item Type");
+            String userInput = input.nextLine();
+            int userChoice = Integer.parseInt(userInput);
+
+            switch (userChoice) {
+                case 1:
+                    inventoryManager.dataSortAlphabetical();
+                    System.out.println("Your inventory has been sorted:");
+                    printInventory();
+                    break;
+                case 2:
+                    inventoryManager.dataSortByItem();
+                    System.out.println("Your inventory has been sorted:");
+                    printInventory();
+                    break;
+                default:
+                    System.out.println("Invalid option");
+            }
     }
 
     public static String itemSearchMenu() {
@@ -281,7 +301,7 @@ public class Main {
                 } else {
                     System.out.println("Please only choose numbers 1 through 4");
                 }
-            }else {
+            } else {
                 System.out.println("Please only choose numbers 1 through 3");
             }
 
@@ -307,13 +327,37 @@ public class Main {
         }
     }
 
-    public static void advancedMenu(){
-       /* 8: Advanced features
-        herunder:
-        1: Export data TODO
-        2: Reset data / delete data (husk en "er du sikker på..." før sletning) TODO
-        3: Restore data TODO{
-        */
+    //TODO - hvis metoden kaldes i en "try-ccatch" til parse af int, skal der så også try-catches her?
+    public static void advancedMenu() {
+        System.out.println("1: Create inventory backup\n" +
+                "2: Restore inventory from backup\n" +
+                "3: Reset inventory");
+        String userInput = input.nextLine();
+        int userChoice = Integer.parseInt(userInput);
+
+        switch (userChoice) {
+            case 1:
+                serializeInventory();
+                break;
+            case 2:
+                deserializeInventory();
+                break;
+            case 3:
+                resetInventoryData();
+                break;
+            default:
+                System.out.println("Invalid option");
+        }
+
+    }
+
+    public static void resetInventoryData() {
+        System.out.println("!!WARNING!! Resetting inventory cannot be undone. Do you still want to proceed (Y/N)?");
+        String userInput = input.nextLine().trim();
+        if (userInput.equalsIgnoreCase("Y")) {
+            inventoryManager.factoryResetInventory();
+            System.out.println("Inventory has been reset");
+        }
     }
 
 }
