@@ -7,7 +7,7 @@ import enums.WeaponMaterial;
 public abstract class Weapon extends Item{
     private final WeaponHand hand;
     private final WeaponMaterial material;
-    private final int defence; //TODO spørg Mor eller Far -- skal vi lave gettere og settere på de attributter som spillet måske vil bruge udenfor vores inventory
+    private final int defence;
     private final int damage;
     private final Rarity rarity;
 
@@ -39,10 +39,8 @@ public abstract class Weapon extends Item{
             rarityScore = 1;
         } else if (this.rarity == Rarity.RARE) {
             rarityScore = 2;
-        } else if (this.rarity == Rarity.LEGENDARY) {
+        } else { //if this.rarity == Rarity.LEGENDARY
             rarityScore = 3;
-        } else {
-            rarityScore = 0; //TODO tjek else
         }
         //calculates damage by combining the scores of rarity and material and base damage
         if (this.material == WeaponMaterial.WOOD) {
@@ -51,10 +49,8 @@ public abstract class Weapon extends Item{
             result = baseDamage + rarityScore + 1;
         } else if (this.material == WeaponMaterial.IRON) {
             result = baseDamage + rarityScore + 2;
-        } else if (this.material == WeaponMaterial.STEEL) {
+        } else { //if this.material == WeaponMaterial.STEEL
             result = baseDamage + rarityScore + 3;
-        } else {
-            result = baseDamage + rarityScore; //TODO tjek else
         }
         return result;
     }
@@ -68,11 +64,8 @@ public abstract class Weapon extends Item{
             addedDefence += 1;
         } else if (this.rarity == Rarity.RARE) {
             addedDefence += 2;
-        } else if (this.rarity == Rarity.LEGENDARY) {
+        } else { //if this.rarity == Rarity.LEGENDARY
             addedDefence += 3;
-        } else {
-            addedDefence += 0;
-            // TODO - tjek "else"
         }
 
         //Calculate added defence from material
@@ -82,11 +75,8 @@ public abstract class Weapon extends Item{
             addedDefence += 1;
         } else if (this.material == WeaponMaterial.IRON) {
             addedDefence += 2;
-        } else if (this.material == WeaponMaterial.STEEL) {
+        } else { //this.material == WeaponMaterial.STEEL
             addedDefence += 3;
-        } else {
-            addedDefence += 0;
-            // TODO - tjek "else"
         }
 
         return baseDefence + addedDefence;
@@ -100,11 +90,8 @@ public abstract class Weapon extends Item{
             result = baseWeight * 1.1;
         } else if (this.material == WeaponMaterial.IRON) {
             result = baseWeight * 1.2;
-        } else if (this.material == WeaponMaterial.STEEL) {
+        } else { // if this.material == WeaponMaterial.STEEL
             result = baseWeight + 1.5;
-        } else {
-            result = baseWeight;
-            // TODO - tjek "else"
         }
         return result;
     }

@@ -5,7 +5,6 @@ import java.io.Serializable;
 public abstract class Item implements Serializable {
     private String name;
     private double weight;
-    //private Rarity rarity;
 
     public Item() {
     }

@@ -10,7 +10,6 @@ import java.io.Serializable;
 public class InventorySlot implements Serializable {
     private Item item;
     private int quantity;
-    //TODO - "ikke objektorienteret nok" - skal det ligge som array i stedet for?
 
     public InventorySlot() {
 
@@ -24,24 +23,16 @@ public class InventorySlot implements Serializable {
         return this.item;
     }
 
-    public void setQuantity(int quantity){
-        this.quantity = quantity;
-    }
-
     public void addItem(Item item) {
         if (isEmpty()) {
             this.item = item;
             this.quantity = 1;
-        } else {
-            //TODO - exception "slot er optaget"
         }
     }
 
     public void addToStack(Item item){
         if (canStackWith(item) && !isStackFull()){
             this.quantity += 1;
-        } else {
-            //TODO - exception "kan ikke tilføje til stack" (eller lignende)
         }
     }
 
@@ -87,8 +78,10 @@ public class InventorySlot implements Serializable {
                 return false;
             }
         } else {
-            return true; //TODO - kig på returnering
-
+            if (this.item != null) { //if there is a non-consumable item in the slot
+                return true;
+            }
+            return false;
         }
     }
 
@@ -107,14 +100,5 @@ public class InventorySlot implements Serializable {
             this.quantity = 0;
             this.item = null;
         }
-    }
-
-    //TODO -KUN TIL TEST
-    @Override
-    public String toString() {
-        return "InventorySlot{" +
-                "item=" + item +
-                ", quantity=" + quantity +
-                '}';
     }
 }

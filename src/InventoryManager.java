@@ -1,14 +1,10 @@
-import enums.Rarity;
-import enums.WeaponMaterial;
 import exceptions.ExceedingMaxSlotCapacityException;
 import exceptions.InventoryWeightLimitReachedException;
 import exceptions.NoEmptySlotsAvailableException;
 import inventory.Inventory;
 import inventory.InventorySlot;
 import items.*;
-
 import java.io.IOException;
-import java.util.Arrays;
 
 public class InventoryManager {
     private Inventory inventory;
@@ -57,7 +53,7 @@ public class InventoryManager {
     public String searchForItem(String searchParameter) {
         InventorySlot[] items = this.inventory.getItems();
         int amountInInventory = 0;
-        String startMessage = ("You are searching for: " + searchParameter) + " and the system found "; //TODO evt lav en bedre promt
+        String startMessage = ("You are searching for: " + searchParameter) + " and the system found ";
         String list = "";
         for (int i = 0; i < items.length; i++) {
             if (items[i].getItem() != null) {
@@ -88,28 +84,14 @@ public class InventoryManager {
                     if (itemName1.compareTo(itemName2) > 0) { //swap - the compareTo method sorts strings alphabetically by sending -1 if item2 is closer to A 0 if item2 os teh same as item1 and 1 if item2 s closer to z
                         swapped = true;
                         //swapping item1 and item2
-                        InventorySlot item1 = items[i];
-                        InventorySlot item2 = items[i + 1];
-                        items[i] = item2;
-                        items[i + 1] = item1;
-                    }
-                //If item[i] contains an Item and item[i+1] doesn't:
-                } else if (items[i].getItem() != null && items[i+ 1].getItem() == null){
-                    if (swapped) {
-                        swapped = true;
-                    } else {
-                        swapped = false;
+                        swapItems(i);
                     }
                 //If item[i] doesn't contain an Item and item[i+1] does contain an Item:
                 } else if (items[i].getItem() == null && items[i + 1].getItem() != null){
                     swapped = true;
                     //swapping item1 and item2
-                    InventorySlot item1 = items[i];
-                    InventorySlot item2 = items[i + 1];
-                    items[i] = item2;
-                    items[i + 1] = item1;
-                //If item[i] and item[i+1] both don't contain an Item:
-                } else {
+                    swapItems(i);
+                } else { //no swap if the previous conditions aren't met
                     if (swapped) {
                         swapped = true;
                     } else {
@@ -121,11 +103,9 @@ public class InventoryManager {
     }
 
 
-    //TODO - find ud af, om det kan fungere med undersortering af weapon, wearable, consumable
-    //
-    public void dataSortByItem() {
+    public void dataSortByItemType() {
         InventorySlot[] items = this.inventory.getItems();
-        boolean swapped = true;
+        boolean swapped;
         do {
             swapped = false;
             for (int i = 0; i < items.length - 1; i++) {
@@ -134,9 +114,9 @@ public class InventoryManager {
                 boolean bothWearables = items[i].getItem() instanceof Wearable && items[i + 1].getItem() instanceof Wearable;
                 boolean bothWeapons = items[i].getItem() instanceof Weapon && items[i + 1].getItem() instanceof Weapon;
 
-                // if (items[i].getItem() == null && items[i + 1].getItem() == null) -> no swap
-                // if (items[i].getItem() instanceof Wearable && (items[i + 1].getItem() instanceof Weapon || items[i + 1].getItem() instanceof Consumable)) -> no swap
-                // if (items[i].getItem() instanceof Wearable && items[i + 1].getItem() instanceof Consumable) -> no swap
+                // no swap if (items[i].getItem() == null && items[i + 1].getItem() == null)
+                // no swap if (items[i].getItem() instanceof Wearable && (items[i + 1].getItem() instanceof Weapon || items[i + 1].getItem() instanceof Consumable))
+                // no swap if (items[i].getItem() instanceof Wearable && items[i + 1].getItem() instanceof Consumable)
                 if (items[i].getItem() == null && items[i + 1].getItem() != null) {
                     swapped = true;
                     //swapping Item[i] and Item[i+1]
@@ -150,24 +130,17 @@ public class InventoryManager {
                     //swapping Item[i] and Item[i+1]
                     swapItems(i);
                 } else if (bothWearables || bothWeapons || bothConsumables) {
-                    if (items[i].getClass() == items[i+1].getClass()){
                         if (items[i].getItem().getName().compareTo(items[i + 1].getItem().getName()) > 0) {
                             swapped = true;
                             //swapping Item[i] and Item[i+1]
                             swapItems(i);
                         }
-                    } /*else {
-                        String item1name = items[i].getClass().getSimpleName();
-                        String item2name = items[i + 1].getClass().getSimpleName();
-                        if (item1name.compareTo(item2name) > 0) {
-                            swapped = true;
-                            //swapping Item[i] and Item[i+1]
-                            swapItems(i);
-                        }
-                    }*/
-                    //TODO - Ovenstående troede vi ville sortere klassenavne alfabetisk, men det gør den ikke
-                        //items[i].getClass().getSimpleName().toString().compareTo(items[i + 1].getClass().getSimpleName().toString()
-                        //sorter efter klassenavn
+                } else { //no swap if the previous conditions aren't met
+                    if (swapped) {
+                        swapped = true;
+                    } else {
+                        swapped = false;
+                    }
                 }
             }
         } while (swapped);

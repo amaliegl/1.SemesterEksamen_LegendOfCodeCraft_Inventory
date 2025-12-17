@@ -1,9 +1,4 @@
-import enums.ConsumableMaterial;
-import enums.Rarity;
-import enums.WeaponMaterial;
-import enums.WearableMaterial;
 import exceptions.*;
-import inventory.Inventory;
 import items.*;
 
 import java.io.IOException;
@@ -39,8 +34,10 @@ public class Main {
                         addRandomItemToInventory();
                         break;
                     case 2:
-                        for (int i = 0; i < 10; i++) addRandomItemToInventory();
-                        break; //TODO - skal der være klammer rundt om metode?
+                        for (int i = 0; i < 10; i++) {
+                            addRandomItemToInventory();
+                        }
+                        break;
                     case 3:
                         removeItemFromInventory();
                         break;
@@ -77,27 +74,25 @@ public class Main {
 
 
     public static void serializeInventory() {
-        System.out.println("Indtast tekstfil-navn");
+        System.out.print("Type the file name you want for your inventory backup: ");
         String fileName = input.nextLine();
         try {
             inventoryManager.serializeInventory(fileName);
+            System.out.println("Inventory backup has been created");
         } catch (IOException e) {
-            //throw new RuntimeException(e);
             System.out.println("Error trying to serialize inventory");
         }
-        //inventoryManager.serializeInventory(fileName);
     }
 
     public static void deserializeInventory() {
-        System.out.println("Indtast tekstfil-navn");
+        System.out.print("Type the file name of your inventory backup file: ");
         String fileName = input.nextLine();
         try {
             inventoryManager.deserializeInventory(fileName);
+            System.out.println("Inventory has been restored from the chosen backup");
         } catch (IOException e) {
-            //throw new RuntimeException(e);
             System.out.println("Error trying to deserialize inventory");
         } catch (ClassNotFoundException e) {
-            //throw new RuntimeException(e);
             System.out.println("Error finding class when trying to deserialize inventory");
         }
     }
@@ -105,7 +100,9 @@ public class Main {
 
     public static void addRandomItemToInventory() {
         try {
-            inventoryManager.addItem(itemFactory.createRandomItem());
+            Item item = itemFactory.createRandomItem(); //create random item
+            inventoryManager.addItem(item);
+            System.out.println("Item was added to inventory");
         } catch (InventoryWeightLimitReachedException e) {
             System.out.println("Cannot add item as inventory weight limit will be exceeded.");
         } catch (NoEmptySlotsAvailableException e) {
@@ -150,7 +147,7 @@ public class Main {
                     printInventory();
                     break;
                 case 2:
-                    inventoryManager.dataSortByItem();
+                    inventoryManager.dataSortByItemType();
                     System.out.println("Your inventory has been sorted:");
                     printInventory();
                     break;
@@ -304,12 +301,10 @@ public class Main {
             } else {
                 System.out.println("Please only choose numbers 1 through 3");
             }
-
         } catch (NumberFormatException e) {
             System.out.println("Please only type a whole number");
-            //"You have not inputted a valid number"
         }
-        return "Det virkede ikke SLEEEEEEEEET"; //TODO ved ikke hvad det her gør
+        return "Error";
     }
 
     public static void addSlotsToInventory() {
@@ -327,8 +322,8 @@ public class Main {
         }
     }
 
-    //TODO - hvis metoden kaldes i en "try-ccatch" til parse af int, skal der så også try-catches her?
     public static void advancedMenu() {
+        //Is used within a try catch for parsing String userinput to an int
         System.out.println("1: Create inventory backup\n" +
                 "2: Restore inventory from backup\n" +
                 "3: Reset inventory");
@@ -348,7 +343,6 @@ public class Main {
             default:
                 System.out.println("Invalid option");
         }
-
     }
 
     public static void resetInventoryData() {
@@ -359,5 +353,4 @@ public class Main {
             System.out.println("Inventory has been reset");
         }
     }
-
 }

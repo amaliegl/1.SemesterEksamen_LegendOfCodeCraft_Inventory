@@ -7,7 +7,7 @@ public class Arrow extends Consumable implements ConsumableWithMaterial {
     private static final String name = "Arrow";
     private final ConsumableMaterial material;
     private int damage = 1; //base damage is 1, more damage is added based on material in calculateDamage() method
-    private static final double baseWeight = 0.1;
+    private static final double baseWeight = 0.05;
     private static final int maxStack = 30;
 
 
@@ -37,11 +37,8 @@ public class Arrow extends Consumable implements ConsumableWithMaterial {
             result = baseWeight + 0.1;
         } else if (this.material == ConsumableMaterial.FLINT) {
             result = baseWeight + 0.2;
-        } else if (this.material == ConsumableMaterial.STEEL) {
-            result = baseWeight + 0.2;
-        } else {
-            result = baseWeight;
-            // TODO - tjek "else"
+        } else {//if this.material == ConsumableMaterial.STEEL
+            result = baseWeight + 0.25;
         }
         return result;
     }
@@ -55,10 +52,8 @@ public class Arrow extends Consumable implements ConsumableWithMaterial {
             result = this.damage + 1;
         } else if (this.material == ConsumableMaterial.FLINT){
             result = this.damage + 2;
-        } else if (this.material == ConsumableMaterial.STEEL){
+        } else{ //if (this.material == ConsumableMaterial.STEEL)
             result = this.damage + 3;
-        } else {
-            result = this.damage; //TODO tjek else
         }
 
         return result;

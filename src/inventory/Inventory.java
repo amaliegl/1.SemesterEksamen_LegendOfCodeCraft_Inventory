@@ -1,23 +1,20 @@
 package inventory;
 
-
 import exceptions.ExceedingMaxSlotCapacityException;
 import exceptions.InventorySlotAlreadyEmptyException;
 import exceptions.InventoryWeightLimitReachedException;
 import exceptions.ExceedsAvailableSlotsException;
 import items.Consumable;
 import items.Item;
-import items.SerializationClass;
-
-import java.io.IOException;
 import java.io.Serializable;
-import java.util.Arrays;
 
 public class Inventory implements Serializable {
     private final int maxSlots = 192;
-    private int unlockedSlots = 32;
+    private final int defaultUnlockedSlots = 32;
+    private int unlockedSlots = defaultUnlockedSlots;
     private final double maxWeight = 50;
-    private double currentWeight = 0;
+    private final double defaultWeight = 0;
+    private double currentWeight = defaultWeight;
     private InventorySlot[] items;
 
     public Inventory() {
@@ -41,7 +38,7 @@ public class Inventory implements Serializable {
         items[index].addToStack(item);
         addWeightToInventory(item);
     }
-    
+
     private void addWeightToInventory(Item item){
         this.currentWeight += item.getWeight();
     }
@@ -61,10 +58,12 @@ public class Inventory implements Serializable {
     public void removeItemFromSlot(int index) throws InventorySlotAlreadyEmptyException {
         if (index > unlockedSlots || index < 0) {
             throw new ExceedsAvailableSlotsException("Attempting to remove an item from a locked slot");
-            //TODO - skal der være en ekstra exception, som håndterer ugyldige slots (<0 og >192)?
         }
         //save weight of the item at items[index] to remove if consume() is successful
-        double itemWeight = items[index].getItem().getWeight();
+        double itemWeight = 0;
+        if (items[index].getItem() != null) {
+            itemWeight = items[index].getItem().getWeight();
+        }
         this.items[index].consume(); //removes item
         removeWeightFromInventory(itemWeight); //remove the stored weight from inventory now that the item has been removed
     }
@@ -73,7 +72,6 @@ public class Inventory implements Serializable {
     public int slotWhereItemCanAddToStack(Item item) {
         if (item instanceof Consumable) {
             for (int i = 0; i < this.items.length; i++) {
-                //TODO - find ud af, om det giver mening at tjekke quantity!=0 først
                 if (this.items[i].canStackWith(item)) {
                     if (!this.items[i].isStackFull()) {
                         return i;
@@ -96,14 +94,16 @@ public class Inventory implements Serializable {
 
     public String printSlotOverview(){
         String output = "";
-        for (int i = 0; i <items.length; i++){
+        for (int i = 0; i < this.items.length; i++){
             if (items[i].getItem() != null) {
-                output += ("Slot " + (i + 1) + ": " + items[i].getItem().getName() + " (" + items[i].getQuantity() + "): " + (items[i].getItem().getWeight() * items[i].getQuantity()) +"kg\n");
+                String formattedItemWeight = String.format("%.2f", (items[i].getItem().getWeight() * items[i].getQuantity()));
+                output += ("Slot " + (i + 1) + ": " + items[i].getItem().getName() + " (" + items[i].getQuantity() + "): " + formattedItemWeight +"kg\n");
             } else {
                 output += "Slot " + (i + 1) + ": Empty\n";
             }
         }
-        output += ("Total inventory weight: " + this.currentWeight + "kg");
+        String formattedInventoryWeight = String.format("%.2f", this.currentWeight);
+        output += ("Total inventory weight: " + formattedInventoryWeight + "kg");
         return output;
     }
 
@@ -119,37 +119,23 @@ public class Inventory implements Serializable {
                 temp[i] = items[i];
             }
 
-            //adding empty slots to the newly added slots
+            //adding extra empty slots to the temp inventory
             for (int i = items.length; i < temp.length; i++) {
                 temp[i] = new InventorySlot();
             }
 
-            //make our inventory equal the newly created array of slots
+            //make our inventory become the newly created array of slots
             items = temp;
         }
     }
 
     public void factoryResetInventory(){
         for (int i = 0; i < this.items.length; i++) {
-            if (items[i].getItem() != null) { //TODO - if indsat for at undgå fejl, når der forsøges at ryddes tomme slots
+            if (items[i].getItem() != null) { //Checking if slot contains an item
                 items[i].clearSlot();
             }
-            this.currentWeight = 0;
-            this.unlockedSlots = 32;
-            //TODO - skal Inventory have attribut "DefaultUnlockedSlots = 32" som man så kan sætte "unlockedSlots" lig med hernede?
-            //TODO - det samme med "currentWeight" eller er det bare logisk, at man selvfølgelig har 0 kg til at starte med?
         }
-    }
-
-    //TODO - KUN TIL TEST!!
-    @Override
-    public String toString() {
-        return "Inventory{" +
-                "maxSlots=" + maxSlots +
-                ", unlockedSlots=" + unlockedSlots +
-                ", maxWeight=" + maxWeight +
-                ", currentWeight=" + currentWeight +
-                ", items=" + Arrays.toString(items) +
-                '}';
+        this.currentWeight = defaultWeight;
+        this.unlockedSlots = defaultUnlockedSlots;
     }
 }

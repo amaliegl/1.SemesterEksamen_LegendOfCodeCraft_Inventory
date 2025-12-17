@@ -2,11 +2,11 @@ package items;
 
 import enums.*;
 
-public class Wearable extends Item { //TODO lav final/private osv
-    BodyPart bodyPart;
-    WearableMaterial material;
-    int defence;
-    Rarity rarity;
+public class Wearable extends Item {
+    private final BodyPart bodyPart;
+    private final WearableMaterial material;
+    private final int defence;
+    private final Rarity rarity;
 
     public Wearable(String name, Rarity rarity, WearableMaterial material, BodyPart bodyPart, int baseDefence, double baseWeight) {
         super();
@@ -33,11 +33,8 @@ public class Wearable extends Item { //TODO lav final/private osv
             addedDefence += 1;
         } else if (this.rarity == Rarity.RARE) {
             addedDefence += 2;
-        } else if (this.rarity == Rarity.LEGENDARY) {
+        } else { //if this.rarity == Rarity.LEGENDARY
             addedDefence += 3;
-        } else {
-            addedDefence += 0;
-            // TODO - tjek "else"
         }
 
         //Calculate added defence from material
@@ -47,14 +44,11 @@ public class Wearable extends Item { //TODO lav final/private osv
             addedDefence *= 1;
         } else if (this.material == WearableMaterial.STEEL) {
             addedDefence += 2;
-        } else if (this.material == WearableMaterial.CHAINMAIL) {
+        } else { //if this.material == WearableMaterial.CHAINMAIL
             addedDefence += 3;
-        } else {
-            addedDefence += 0;
-            // TODO - tjek "else"
         }
 
-        return this.defence + addedDefence;
+        return baseDefence + addedDefence;
     }
 
     private double calculateWeight(double baseWeight) {
@@ -65,13 +59,9 @@ public class Wearable extends Item { //TODO lav final/private osv
             result = baseWeight * 1.1;
         } else if (this.material == WearableMaterial.STEEL) {
             result = baseWeight * 1.2;
-        } else if (this.material == WearableMaterial.CHAINMAIL) {
+        } else { //if this.material == WearableMaterial.CHAINMAIL
             result = baseWeight * 1.5;
-        } else {
-            result = baseWeight;
-            // TODO - tjek "else"
         }
         return result;
     }
-
 }

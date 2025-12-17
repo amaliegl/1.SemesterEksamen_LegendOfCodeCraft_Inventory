@@ -10,7 +10,7 @@ public class Shield extends Weapon {
     private static final WeaponHand hand = WeaponHand.OFF_HAND;
     private static final int baseDamage = 5;
     private static final int baseDefence = 10;
-    private static final double baseWeight = 5;
+    private static final double baseWeight = 3.5;
 
     public Shield(Rarity rarity, WeaponMaterial material) {
         super(name, rarity, material, hand, baseDamage, baseDefence, baseWeight);

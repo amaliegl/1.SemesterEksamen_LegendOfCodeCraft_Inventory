@@ -2,8 +2,6 @@ package items;
 
 public class Consumable extends Item {
     private final int maxStack;
-    //private int damage;
-    //private Rarity rarity = Rarity.COMMON; //TODO - er den god at have med eller ligemeget
 
     public Consumable(String name, int maxStack, double weight) {
         super();

@@ -6,11 +6,6 @@ import items.*;
 
 public class ItemFactory {
 
-    //TODO - SLET!! KUN TIL TEST
-    public static Item createWoodArrow() {
-        return new Arrow(ConsumableMaterial.WOOD);
-    }
-
     public static Item createRandomItem(){
         String type = createRandomItemType();
         switch (type.toLowerCase()){
@@ -53,7 +48,6 @@ public class ItemFactory {
             case 12: itemType = "Sword"; break;
             default:
                 throw new IllegalStateException("Unexpected value: " + randomNumber);
-                //IntelliJ foreslog ovenstående
         }
         return itemType;
     }
@@ -73,7 +67,6 @@ public class ItemFactory {
             case 4: material = WeaponMaterial.STEEL; break;
             default:
                 throw new IllegalStateException("Unexpected value: " + randomNumber);
-                //IntelliJ foreslog ovenstående
         }
         return material;
     }
@@ -93,7 +86,6 @@ public class ItemFactory {
             case 4: material = WearableMaterial.CHAINMAIL; break;
             default:
                 throw new IllegalStateException("Unexpected value: " + randomNumber);
-                //IntelliJ foreslog ovenstående
         }
         return material;
     }
@@ -113,7 +105,6 @@ public class ItemFactory {
             case 4: material = ConsumableMaterial.STEEL; break;
             default:
                 throw new IllegalStateException("Unexpected value: " + randomNumber);
-                //IntelliJ foreslog ovenstående
         }
         return material;
     }

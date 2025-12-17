@@ -37,11 +37,8 @@ public class Pellet extends Consumable implements ConsumableWithMaterial {
             result = baseWeight + 0.1;
         } else if (this.material == ConsumableMaterial.FLINT) {
             result = baseWeight + 0.2;
-        } else if (this.material == ConsumableMaterial.STEEL) {
-            result = baseWeight + 0.2;
-        } else {
-            result = baseWeight;
-            // TODO - tjek "else"
+        } else { //if this.material == ConsumableMaterial.STEEL
+            result = baseWeight + 0.25;
         }
         return result;
     }
@@ -55,12 +52,9 @@ public class Pellet extends Consumable implements ConsumableWithMaterial {
             result = this.damage + 1;
         } else if (this.material == ConsumableMaterial.FLINT){
             result = this.damage + 2;
-        } else if (this.material == ConsumableMaterial.STEEL){
+        } else { //if this.material == ConsumableMaterial.STEEL
             result = this.damage + 3;
-        } else {
-            result = this.damage; //TODO tjek else
         }
-
         return result;
     }
 }
