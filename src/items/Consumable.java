@@ -1,6 +1,6 @@
 package items;
 
-public class Consumable extends Item {
+public abstract class Consumable extends Item {
     private final int maxStack;
 
     public Consumable(String name, int maxStack, double weight) {
